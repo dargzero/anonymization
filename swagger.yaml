@@ -1,0 +1,208 @@
+swagger: "2.0"
+
+info:
+  description: "This is a data anonymization server. You can set the anonymization requirements for the different datasets individually, and upload data to them. The uploaded data is anonymized on the server and can be then downloaded."
+  version: "0.1-alpha"
+  title: "Data Anonymization Server"
+    
+host: "localhost"
+basePath: "/v1"
+schemes:
+  - "http"
+
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+
+
+tags:
+  - name: "datasets"
+    description: "Operations about the datasets"
+  - name: "data"
+    description: "Access to the anonymized data"
+  - name: "upload"
+    description: "Operations about upload sessions"
+
+paths:
+  /datasets:
+    get:
+      tags:
+        - "datasets"
+      summary: "List the datasets on the server"
+      description: "Returns the list of the currently available datasets on the anonymization server."
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/DatasetResponse"
+  /datasets/{name}:
+    get:
+      tags:
+        - "datasets"
+      summary: "Get the metadata of a dataset"
+      description: "Returns the metadata of the specified dataset."
+      parameters:
+        - in: path
+          name: "name"
+          description: "The name of the dataset"
+          required: true
+          type: string
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/DatasetResponse"
+        404:
+          description: "The dataset with the specified name was not found."
+    put:
+      tags:
+        - "datasets"
+      summary: "Create a new dataset"
+      description: "Creates a new dataset on the anonymization server with the given name and settings."
+      parameters:
+        - in: path
+          name: "name"
+          description: "The name of the dataset"
+          required: true
+          type: string
+        - in: body
+          name: "settings"
+          description: "The settings of the dataset"
+          required: true
+          schema:
+            $ref: "#/definitions/CreateDatasetRequest"
+      responses:
+        201:
+          description: "Successfully created"
+          schema:
+            $ref: "#/definitions/DatasetResponse"
+        409:
+          description: "A dataset with the specified name already exists."
+    delete:
+      tags:
+        - "datasets"
+      summary: "Delete a dataset"
+      description: "Deletes the specified dataset from the anonymization server along with all its data."
+      parameters:
+        - in: path
+          name: "name"
+          description: "The name of the dataset"
+          required: true
+          type: string
+      responses:
+        204:
+          description: "Successfully deleted"
+        404:
+          description: "The dataset with the specified name was not found."
+  /data/{name}:
+    get:
+      tags:
+        - "data"
+      summary: "Get the anonymized data"
+      description: "Returns the anonymized data from the specified dataset."
+      parameters:
+        - in: path
+          name: "name"
+          description: "The name of the dataset"
+          required: true
+          type: string
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Document"
+        404:
+          description: "The dataset with the specified name was not found."
+  /upload:
+    post:
+      tags:
+        - "upload"
+      summary: "Create an upload session"
+      description: "Creates and returns an upload session for the specified dataset."
+      parameters:
+        - in: body
+          name: settings
+          description: "The settings for the upload session"
+          schema:
+            $ref: "#/definitions/CreateUploadSessionRequest"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/CreateUploadSessionResponse"
+        400:
+          description: "An upload session for the specified dataset is currently in use."
+        404:
+          description: "The dataset with the specified name was not found."
+  /upload/{sessionId}:
+    post:
+      tags:
+        - "upload"
+      summary: "Upload data"
+      description: "Uploads data to the specified upload session. If the session is committed, then the session is deleted and all the data is anonymized and added to the dataset."
+      parameters:
+        - in: path
+          name: "sessionId"
+          description: "The ID of the session"
+          required: true
+          type: string
+        - in: query
+          name: "commit"
+          description: "Whether to commit the upload session"
+          required: false
+          type: boolean
+        - in: body
+          name: "payload"
+          description: "The data to upload"
+          required: false
+          schema:
+            $ref: "#/definitions/Document"
+      responses:
+        204:
+          description: "Successfully uploaded"
+        404:
+          description: "The upload session with the specified ID was not found."
+    delete:
+      tags:
+        - "upload"
+      summary: "Delete an upload session"
+      description: "Deletes an upload session and all the already uploaded data without adding it to the dataset."
+      parameters:
+        - in: path
+          name: "sessionId"
+          description: "The ID of the session"
+          required: true
+          type: string
+      responses:
+        204:
+          description: "Successfully deleted"
+        404:
+          description: "The upload session with the specified ID was not found."
+
+definitions:
+  DatasetResponse:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+  CreateDatasetRequest:
+    type: "object"
+    properties:
+      placeholder:
+        type: "string"
+  Document: {}
+  CreateUploadSessionRequest:
+    type: "object"
+    properties:
+      datasetName:
+        type: "string"
+  CreateUploadSessionResponse:
+    type: "object"
+    properties:
+      sessionId:
+        type: "string"

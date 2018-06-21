@@ -1,0 +1,16 @@
+version: '3.5'
+
+services:
+  anonimization_test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: anonymization_test:latest
+    container_name: anonymization_test
+    networks:
+      - anonymization_network
+
+networks:
+  anonymization_network:
+    name: anonymization_network
+    driver: bridge
