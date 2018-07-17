@@ -16,3 +16,7 @@ pkg
 # Source files that are not in this project
 src/github.com/
 src/**/vendor/
+
+# Visual Studio code settings
+.vscode
+**/.vscode
