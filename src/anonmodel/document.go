@@ -43,25 +43,24 @@ func (documents Documents) Validate() error {
 		return ErrValidation("No documents sent to upload")
 	}
 
-	for _, doc := range documents {
-		if err := doc.validate(); err != nil {
-			return err
-		}
-	}
-
 	return nil
 }
 
 // Convert convert the array of Documents into an array if interface{}s
-func (documents Documents) Convert(continuous bool) []interface{} {
+func (documents Documents) Convert(continuous bool, table map[string]TypeConversionfunc) []interface{} {
 	result := make([]interface{}, len(documents))
 	for ix, document := range documents {
 		if continuous {
 			document["__pending"] = true
 		}
+		for key, value := range document {
+			if table[key] != nil {
+				document[key], _ = table[key](value)
+			} else {
+			}
+		}
 		result[ix] = document
 	}
-
 	return result
 }
 

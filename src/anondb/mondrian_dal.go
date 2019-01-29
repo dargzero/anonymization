@@ -19,6 +19,8 @@ func convertBoundary(boundary anonmodel.Boundary) (dbBoundary, error) {
 		return &numericBoundary{boundary.(*anonmodel.NumericBoundary)}, nil
 	case *anonmodel.PrefixBoundary:
 		return &prefixBoundary{boundary.(*anonmodel.PrefixBoundary)}, nil
+	case *anonmodel.GPSBoundary:
+		return &gpsBoundary{boundary.(*anonmodel.GPSBoundary)}, nil
 	default:
 		return nil, fmt.Errorf("Unrecognized boundary type: '%T'", boundary)
 	}
@@ -81,6 +83,7 @@ func Generalize(anonCollectionName string, partition anonmodel.Partition) error 
 
 	match, err := getMatch(partition)
 	if err != nil {
+
 		return err
 	}
 
@@ -90,6 +93,7 @@ func Generalize(anonCollectionName string, partition anonmodel.Partition) error 
 	}
 
 	_, err = anon.UpdateAll(match, bson.M{"$set": set})
+
 	return err
 }
 

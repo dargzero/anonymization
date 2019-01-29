@@ -2,6 +2,9 @@ package anondb
 
 import (
 	"anonmodel"
+	"fmt"
+	"log"
+	"strings"
 
 	"github.com/globalsign/mgo/bson"
 )
@@ -43,8 +46,14 @@ func (b *numericBoundary) setAggregation(fieldName string, mainGroup bson.M, fac
 }
 
 func (b *numericBoundary) getResult(fieldName string, mainGroupResult bson.M, queryResult bson.M) interface{} {
-	min := mainGroupResult["min_"+fieldName].(float64)
-	max := mainGroupResult["max_"+fieldName].(float64)
+	min, ok := mainGroupResult["min_"+fieldName].(float64)
+	if !ok {
+		log.Printf("numeric no result\n\n")
+	}
+	max, ok := mainGroupResult["max_"+fieldName].(float64)
+	if !ok {
+		log.Printf("numeric no result\n\n}")
+	}
 	return anonmodel.NumericRange{Min: min, Max: max}
 }
 
@@ -63,5 +72,13 @@ func GetMedian(anonCollectionName string, fieldName string, partition anonmodel.
 	if err = anon.Find(match).Sort(fieldName).Skip(count / 2).Limit(1).One(&result); err != nil {
 		return 0, err
 	}
-	return result[fieldName].(float64), nil
+	if strings.Contains(fieldName, ".") {
+		result[fieldName] = result[fieldName[0:strings.IndexAny(fieldName, ".")]].(bson.M)[fieldName[strings.LastIndexAny(fieldName, ".")+1:]]
+	}
+
+	value, ok := result[fieldName].(float64)
+	if !ok {
+		return 0, fmt.Errorf("No median, (object recived)")
+	}
+	return value, nil
 }

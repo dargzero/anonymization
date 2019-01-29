@@ -18,8 +18,8 @@ func (fieldInfo *FieldAnonymizationInfo) validate() error {
 		return fmt.Errorf("Field 'mode' should be one of 'id', 'qid', 'keep' or 'drop', got '%v'", fieldInfo.Mode)
 	}
 
-	if fieldInfo.Mode == "qid" && fieldInfo.Type != "numeric" && fieldInfo.Type != "prefix" {
-		return fmt.Errorf("Field 'type' should be one of 'numeric' or 'prefix', got '%v'", fieldInfo.Type)
+	if fieldInfo.Mode == "qid" && fieldInfo.Type != "numeric" && fieldInfo.Type != "prefix" && fieldInfo.Type != "coords" {
+		return fmt.Errorf("Field 'type' should be one of 'numeric' or 'prefix' or 'coords', got '%v'", fieldInfo.Type)
 	}
 
 	return nil

@@ -2,6 +2,7 @@ package anondb
 
 import (
 	"anonmodel"
+	"log"
 
 	"github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"
@@ -17,12 +18,17 @@ func InsertDocuments(datasetName string, documents anonmodel.Documents, continuo
 		return err
 	}
 
-	convertedDocs := documents.Convert(continuous)
+	table, err := MakeTypeConversionTable(datasetName)
+	if err != nil {
+		return err
+	}
+	log.Println("Converting documents")
+	convertedDocs := documents.Convert(continuous, table)
 
 	bulk := data.Bulk()
 	bulk.Unordered()
 	bulk.Insert(convertedDocs...)
-	_, err := bulk.Run()
+	_, err = bulk.Run()
 	return err
 }
 
