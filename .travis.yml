@@ -3,5 +3,6 @@ sudo: required
 services:
   - docker
 
+before_script: cd src-go
 script:
 - docker build .
