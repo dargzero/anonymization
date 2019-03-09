@@ -1,1 +1,0 @@
-# Anonymization in business environment
