@@ -1,7 +1,7 @@
 package swagger
 
 import (
-	"anondb"
+	"github.com/dargzero/anonymization/anondb"
 	"log"
 	"net/http"
 )

@@ -1,15 +1,15 @@
 package anonbll
 
 import (
-	"anondb"
-	"anonmodel"
+	"github.com/dargzero/anonymization/anondb"
+	"github.com/dargzero/anonymization/anonmodel"
 	"log"
 	"sync/atomic"
 	"time"
 )
 
-const minSessionAge time.Duration = time.Minute * 120
-const maintenancePeriod time.Duration = time.Minute * 30
+const minSessionAge = time.Minute * 120
+const maintenancePeriod = time.Minute * 30
 
 var stopChannel chan bool
 var stop int32

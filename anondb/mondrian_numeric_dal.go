@@ -1,8 +1,8 @@
 package anondb
 
 import (
-	"anonmodel"
 	"fmt"
+	"github.com/dargzero/anonymization/anonmodel"
 	"log"
 	"strings"
 

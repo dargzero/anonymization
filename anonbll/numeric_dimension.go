@@ -1,8 +1,8 @@
 package anonbll
 
 import (
-	"anondb"
-	"anonmodel"
+	"github.com/dargzero/anonymization/anondb"
+	"github.com/dargzero/anonymization/anonmodel"
 )
 
 type numericDimension struct {

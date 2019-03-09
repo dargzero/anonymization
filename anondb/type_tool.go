@@ -1,7 +1,7 @@
 package anondb
 
 import (
-	"anonmodel"
+	"github.com/dargzero/anonymization/anonmodel"
 	"log"
 )
 

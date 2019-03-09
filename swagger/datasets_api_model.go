@@ -10,7 +10,7 @@
 package swagger
 
 import (
-	"anonmodel"
+	"github.com/dargzero/anonymization/anonmodel"
 )
 
 // CreateDatasetRequest is the JSON object the client sends to create a dataset

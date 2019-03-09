@@ -1,9 +1,9 @@
 package anonbll
 
 import (
-	"anondb"
-	"anonmodel"
 	"fmt"
+	"github.com/dargzero/anonymization/anondb"
+	"github.com/dargzero/anonymization/anonmodel"
 	"log"
 	"time"
 )

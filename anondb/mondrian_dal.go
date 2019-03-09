@@ -1,8 +1,8 @@
 package anondb
 
 import (
-	"anonmodel"
 	"fmt"
+	"github.com/dargzero/anonymization/anonmodel"
 
 	"github.com/globalsign/mgo/bson"
 )
@@ -43,8 +43,8 @@ func GetDimensionStatistics(anonCollectionName string, partition anonmodel.Parti
 	}
 
 	pipeline := []bson.M{
-		bson.M{"$match": match},
-		bson.M{"$facet": facet},
+		{"$match": match},
+		{"$facet": facet},
 	}
 	var queryResult bson.M
 	if err := anon.Pipe(pipeline).One(&queryResult); err != nil {
@@ -99,7 +99,7 @@ func Generalize(anonCollectionName string, partition anonmodel.Partition) error 
 
 func getMatch(partition anonmodel.Partition) (bson.M, error) {
 	match := []bson.M{
-		bson.M{"__anonymized": false},
+		{"__anonymized": false},
 	}
 	for fieldName, boundary := range partition {
 		dbBound, err := convertBoundary(boundary)
@@ -120,7 +120,7 @@ func getAggregation(partition anonmodel.Partition) (bson.M, error) {
 	}
 	facets := bson.M{
 		"mainGroup": []bson.M{
-			bson.M{"$group": mainGroup},
+			{"$group": mainGroup},
 		},
 	}
 	for fieldName, boundary := range partition {

@@ -10,9 +10,9 @@
 package swagger
 
 import (
-	"anonbll"
-	"anondb"
-	"anonmodel"
+	"github.com/dargzero/anonymization/anonbll"
+	"github.com/dargzero/anonymization/anondb"
+	"github.com/dargzero/anonymization/anonmodel"
 	"net/http"
 
 	"github.com/gorilla/mux"

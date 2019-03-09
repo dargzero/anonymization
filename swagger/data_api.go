@@ -10,12 +10,11 @@
 package swagger
 
 import (
-	"anondb"
-	"anonmodel"
 	"fmt"
-	"net/http"
-
+	"github.com/dargzero/anonymization/anondb"
+	"github.com/dargzero/anonymization/anonmodel"
 	"github.com/gorilla/mux"
+	"net/http"
 )
 
 const defaultPageSize = 1000

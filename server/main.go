@@ -1,14 +1,14 @@
 package main
 
 import (
-	"anonbll"
-	"anondb"
 	"context"
+	"github.com/dargzero/anonymization/anonbll"
+	"github.com/dargzero/anonymization/anondb"
+	"github.com/dargzero/anonymization/swagger"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
-	"swagger"
 	"syscall"
 	"time"
 )

@@ -1,7 +1,7 @@
 package anondb
 
 import (
-	"anonmodel"
+	"github.com/dargzero/anonymization/anonmodel"
 	"regexp"
 	"strings"
 
@@ -33,7 +33,7 @@ func getRegexForPrefix(prefix string) string {
 
 func (p *prefixBoundary) setAggregation(fieldName string, mainGroup bson.M, facets bson.M) {
 	facets[fieldName] = []bson.M{
-		bson.M{
+		{
 			"$group": bson.M{
 				"_id":   "$" + fieldName,
 				"count": bson.M{"$sum": 1},

@@ -1,7 +1,7 @@
 package anondb
 
 import (
-	"anonmodel"
+	"github.com/dargzero/anonymization/anonmodel"
 	"log"
 	"time"
 
@@ -20,8 +20,8 @@ func CreateUploadSession(datasetName string) (string, error) {
 		"_id":               datasetName,
 		"uploadSessionData": bson.M{"$exists": false},
 		"$or": []bson.M{
-			bson.M{"settings.mode": "continuous"},
-			bson.M{"anonymized": false},
+			{"settings.mode": "continuous"},
+			{"anonymized": false},
 		},
 	}
 
