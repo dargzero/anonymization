@@ -9,7 +9,7 @@ type FieldAnonymizationInfo struct {
 	Type string `json:"type" bson:"type"`
 }
 
-func (fieldInfo *FieldAnonymizationInfo) validate() error {
+func (fieldInfo *FieldAnonymizationInfo) Validate() error {
 	if err := validateFieldName(fieldInfo.Name); err != nil {
 		return err
 	}

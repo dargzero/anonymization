@@ -1,7 +1,6 @@
 package anonmodel
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -17,10 +16,10 @@ func TestAnonymizationSettings_Validate_K(t *testing.T) {
 		{k: 5, valid: true},
 	}
 	for _, test := range tests {
-		t.Run(fmt.Sprintf("K = %d", test.k), func(t *testing.T) {
+		t.Run(string(test.k), func(t *testing.T) {
 			settings := newAnonymizationSettings()
 			settings.K = test.k
-			assertValidity(t, settings, test.valid)
+			assertSettingsValidity(t, settings, test.valid)
 		})
 	}
 }
@@ -31,14 +30,14 @@ func TestAnonymizationSettings_Validate_Algorithm(t *testing.T) {
 		valid     bool
 	}{
 		{algorithm: "mondrian", valid: true},
-		{algorithm: "newAnonymizationSettingsWith", valid: false},
+		{algorithm: "test", valid: false},
 		{algorithm: "other", valid: false},
 	}
 	for _, test := range tests {
 		t.Run(test.algorithm, func(t *testing.T) {
 			settings := newAnonymizationSettings()
 			settings.Algorithm = test.algorithm
-			assertValidity(t, settings, test.valid)
+			assertSettingsValidity(t, settings, test.valid)
 		})
 	}
 }
@@ -57,7 +56,7 @@ func TestAnonymizationSettings_Validate_Mode(t *testing.T) {
 		t.Run(test.mode, func(t *testing.T) {
 			settings := newAnonymizationSettings()
 			settings.Mode = test.mode
-			assertValidity(t, settings, test.valid)
+			assertSettingsValidity(t, settings, test.valid)
 		})
 	}
 }
@@ -70,7 +69,7 @@ func newAnonymizationSettings() AnonymizationSettings {
 	}
 }
 
-func assertValidity(t *testing.T, s AnonymizationSettings, expected bool) {
+func assertSettingsValidity(t *testing.T, s AnonymizationSettings, expected bool) {
 	err := s.Validate()
 	actual := err == nil
 	if actual != expected {

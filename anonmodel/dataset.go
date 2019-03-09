@@ -27,7 +27,7 @@ func (dataset *Dataset) Validate() error {
 	}
 
 	for _, field := range dataset.Fields {
-		if err := field.validate(); err != nil {
+		if err := field.Validate(); err != nil {
 			return err
 		}
 	}
