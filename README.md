@@ -1,1 +1,1 @@
-# Anonimizálás uzleti kornyezetben
+# Anonymization in business environment
