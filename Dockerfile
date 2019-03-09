@@ -18,6 +18,7 @@ COPY ./ /go/src/github.com/dargzero/anonymization
 # build server
 WORKDIR /go/src
 RUN go install github.com/dargzero/anonymization/server
+RUN go test github.com/dargzero/anonymization/...
 
 # start anonimization server
 WORKDIR /go/bin
