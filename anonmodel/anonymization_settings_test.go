@@ -1,6 +1,7 @@
 package anonmodel
 
 import (
+	"strconv"
 	"testing"
 )
 
@@ -16,7 +17,7 @@ func TestAnonymizationSettings_Validate_K(t *testing.T) {
 		{k: 5, valid: true},
 	}
 	for _, test := range tests {
-		t.Run(string(test.k), func(t *testing.T) {
+		t.Run(strconv.Itoa(test.k), func(t *testing.T) {
 			settings := newAnonymizationSettings()
 			settings.K = test.k
 			assertSettingsValidity(t, settings, test.valid)

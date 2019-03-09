@@ -114,9 +114,9 @@ func TestGetSuppressedFields(t *testing.T) {
 
 	suppressed := GetSuppressedFields(fields)
 
-	if len(suppressed) != 3 &&
-		suppressed[0] != "test1" &&
-		suppressed[1] != "test4" &&
+	if len(suppressed) != 3 ||
+		suppressed[0] != "test1" ||
+		suppressed[1] != "test4" ||
 		suppressed[2] != "test5" {
 		t.Errorf("invalid result: %v", suppressed)
 	}

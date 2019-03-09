@@ -6,7 +6,7 @@ type Document map[string]interface{}
 // Documents represents an array of data objects of any type uploaded by the client
 type Documents []Document
 
-func (document Document) validate() error {
+func (document Document) Validate() error {
 	for key := range document {
 		if err := validateFieldName(key); err != nil {
 			return err
@@ -25,7 +25,7 @@ func (documents Documents) Validate() error {
 	return nil
 }
 
-// Convert convert the array of Documents into an array if interface{}s
+// Convert Documents into []interface{}
 func (documents Documents) Convert(continuous bool, table map[string]TypeConversionfunc) []interface{} {
 	result := make([]interface{}, len(documents))
 	for ix, document := range documents {
@@ -35,7 +35,6 @@ func (documents Documents) Convert(continuous bool, table map[string]TypeConvers
 		for key, value := range document {
 			if table[key] != nil {
 				document[key], _ = table[key](value)
-			} else {
 			}
 		}
 		result[ix] = document
