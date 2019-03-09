@@ -1,3 +1,0 @@
-# L. Sweeney: k-anonymity: a model for protecting privacy
-The article demonstrates that two independent anonymized data sources joined together may partially or fully de-anonymize the records. The author took anonymized health data from National Association of Health Data Organizations (NAHDO, in the USA), then purchased a public voter registration list, and using the common fields in the two datasets (ZIP code, birth date, gender), she was able to recover the medical records of a governor of the state. 
-The article proposes a resolution to the risk of joining independent datasets to de-anonymize data: a table is k-anonymous if for every unique tuple of quasi-identifier values there is at least k corresponding records.
