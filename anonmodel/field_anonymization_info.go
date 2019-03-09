@@ -1,6 +1,9 @@
 package anonmodel
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 // FieldAnonymizationInfo stores how each data field should be handled during anonymization
 type FieldAnonymizationInfo struct {
@@ -49,4 +52,20 @@ func GetQuasiIdentifierFields(fieldInfos []FieldAnonymizationInfo) []FieldAnonym
 	}
 
 	return result
+}
+
+func validateFieldName(field string) error {
+	if field == "_id" {
+		return ErrValidation("Validation error: the '_id' field is not allowed")
+	}
+
+	if strings.HasPrefix(field, "__") {
+		return ErrValidation(fmt.Sprintf("Validation error (%v): document fields starting with '__' are reserved by the anonymization server", field))
+	}
+
+	if strings.ContainsAny(field, ".$") {
+		return ErrValidation(fmt.Sprintf("Validation error (%v): document fields containing either '.' or '$' are not allowed", field))
+	}
+
+	return nil
 }
