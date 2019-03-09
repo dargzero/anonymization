@@ -22,7 +22,7 @@ type Dataset struct {
 
 // Validate validates a dataset sent by the client
 func (dataset *Dataset) Validate() error {
-	if err := dataset.Settings.validate(); err != nil {
+	if err := dataset.Settings.Validate(); err != nil {
 		return err
 	}
 
