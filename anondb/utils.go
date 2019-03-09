@@ -7,9 +7,8 @@ import (
 	"github.com/satori/go.uuid"
 )
 
-func generateUUID() string {
-	uuid, _ := uuid.NewV4()
-	return base64urlEncode(uuid.Bytes())
+func generateUUID() string {	
+	return base64urlEncode(uuid.NewV4().Bytes())
 }
 
 // base64urlEncode implements an URL safe base64 encoding, as seen here:
