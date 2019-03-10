@@ -23,7 +23,7 @@ func (a *GPSArea) GetRelativeArea(original *GPSArea) float64 {
 }
 
 //Clone ...
-func (b *GPSBoundary) Clone() Boundary {
+func (b *GPSBoundary) Clone() *GPSBoundary {
 	return &GPSBoundary{Latitude: b.Latitude,
 		Longitude: b.Longitude}
 }
