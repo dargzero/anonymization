@@ -26,7 +26,7 @@ func (documents Documents) Validate() error {
 }
 
 // Convert Documents into []interface{}
-func (documents Documents) Convert(continuous bool, table map[string]TypeConversionfunc) []interface{} {
+func (documents Documents) Convert(continuous bool, table map[string]TypeConversionFunc) []interface{} {
 	result := make([]interface{}, len(documents))
 	for ix, document := range documents {
 		if continuous {

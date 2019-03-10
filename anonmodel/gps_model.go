@@ -2,8 +2,8 @@ package anonmodel
 
 import "strconv"
 
-//TypeConversionfunc used for converting types
-type TypeConversionfunc func(interface{}) (interface{}, error)
+//TypeConversionFunc used for converting types
+type TypeConversionFunc func(interface{}) (interface{}, error)
 
 //GPSBoundary represents a boundary for a coordinate type field
 type GPSBoundary struct {

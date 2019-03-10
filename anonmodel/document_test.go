@@ -78,7 +78,7 @@ func TestDocuments_Convert(t *testing.T) {
 		clear := func(i interface{}) (interface{}, error) {
 			return 0, nil
 		}
-		converted := docs.Convert(false, map[string]TypeConversionfunc{
+		converted := docs.Convert(false, map[string]TypeConversionFunc{
 			"name": noop,
 			"age":  clear,
 		})
@@ -98,7 +98,7 @@ func TestDocuments_Convert(t *testing.T) {
 		evil := func(i interface{}) (interface{}, error) {
 			return nil, errors.New("evil error")
 		}
-		converted := docs.Convert(false, map[string]TypeConversionfunc{
+		converted := docs.Convert(false, map[string]TypeConversionFunc{
 			"field": evil,
 		})
 
@@ -110,7 +110,7 @@ func TestDocuments_Convert(t *testing.T) {
 
 	t.Run("continuous flag", func(t *testing.T) {
 		docs := Documents{Document{"field": "value"}}
-		converted := docs.Convert(true, map[string]TypeConversionfunc{})
+		converted := docs.Convert(true, map[string]TypeConversionFunc{})
 		if len(converted) != 1 ||
 			!converted[0].(Document)["__pending"].(bool) {
 			t.Errorf("missing pending flag")
