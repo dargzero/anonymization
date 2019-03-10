@@ -19,11 +19,12 @@ type GPSArea struct {
 
 //GetRelativeArea calculates the relative area of coords
 func (a *GPSArea) GetRelativeArea(original *GPSArea) float64 {
-	return a.Latitude.GetNormalizedRange(&original.Latitude) * a.Longitude.GetNormalizedRange(&original.Longitude)
+	return a.Latitude.GetNormalizedRange(&original.Latitude) *
+		a.Longitude.GetNormalizedRange(&original.Longitude)
 }
 
 //Clone ...
-func (b *GPSBoundary) Clone() *GPSBoundary {
+func (b *GPSBoundary) Clone() Boundary {
 	return &GPSBoundary{Latitude: b.Latitude,
 		Longitude: b.Longitude}
 }
