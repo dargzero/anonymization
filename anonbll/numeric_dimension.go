@@ -5,19 +5,19 @@ import (
 	"github.com/dargzero/anonymization/anonmodel"
 )
 
-type numericDimension struct {
+type NumericDimension struct {
 	anonCollectionName string
 	fieldName          string
 	originalRange      anonmodel.NumericRange
 	currentRange       anonmodel.NumericRange
 }
 
-func (d *numericDimension) initialize(anonCollectionName string, fieldName string) {
+func (d *NumericDimension) initialize(anonCollectionName string, fieldName string) {
 	d.anonCollectionName = anonCollectionName
 	d.fieldName = fieldName
 }
 
-func (d *numericDimension) getInitialBoundaries() anonmodel.Boundary {
+func (d *NumericDimension) getInitialBoundaries() anonmodel.Boundary {
 	return &anonmodel.NumericBoundary{
 		LowerBound:          nil,
 		LowerBoundInclusive: false,
@@ -26,12 +26,12 @@ func (d *numericDimension) getInitialBoundaries() anonmodel.Boundary {
 	}
 }
 
-func (d *numericDimension) getDimensionForStatistics(stat interface{}, firstRun bool) mondrianDimension {
+func (d *NumericDimension) getDimensionForStatistics(stat interface{}, firstRun bool) mondrianDimension {
 	if firstRun {
 		d.originalRange = stat.(anonmodel.NumericRange)
 	}
 
-	return &numericDimension{
+	return &NumericDimension{
 		anonCollectionName: d.anonCollectionName,
 		fieldName:          d.fieldName,
 		originalRange:      d.originalRange,
@@ -39,7 +39,7 @@ func (d *numericDimension) getDimensionForStatistics(stat interface{}, firstRun 
 	}
 }
 
-func (d *numericDimension) prepare(partition anonmodel.Partition, count int) {
+func (d *NumericDimension) prepare(partition anonmodel.Partition, count int) {
 	boundary := partition[d.fieldName].(*anonmodel.NumericBoundary)
 
 	if boundary.LowerBound == nil || d.currentRange.Min > *boundary.LowerBound {
@@ -53,11 +53,11 @@ func (d *numericDimension) prepare(partition anonmodel.Partition, count int) {
 	}
 }
 
-func (d *numericDimension) getNormalizedRange() float64 {
+func (d *NumericDimension) getNormalizedRange() float64 {
 	return d.currentRange.GetNormalizedRange(&d.originalRange)
 }
 
-func (d *numericDimension) tryGetAllowableCut(k int, partition anonmodel.Partition, count int) (bool, anonmodel.Partition, anonmodel.Partition, error) {
+func (d *NumericDimension) tryGetAllowableCut(k int, partition anonmodel.Partition, count int) (bool, anonmodel.Partition, anonmodel.Partition, error) {
 	if d.currentRange.Max == d.currentRange.Min {
 		return false, nil, nil, nil
 	}
