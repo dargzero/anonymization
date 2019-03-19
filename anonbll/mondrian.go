@@ -60,7 +60,7 @@ func (m *mondrian) createDimensions() error {
 		var dimension mondrianDimension
 		switch field.Type {
 		case "numeric":
-			dimension = &numericDimension{}
+			dimension = &NumericDimension{}
 		case "prefix":
 			dimension = &prefixDimension{}
 		case "coords":

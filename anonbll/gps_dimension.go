@@ -17,8 +17,8 @@ func (d *gpsDimension) initialize(anonCollectionName string, fieldName string) {
 	d.fieldName = fieldName
 }
 
-func (d *gpsDimension) getLatitude() numericDimension {
-	return numericDimension{
+func (d *gpsDimension) getLatitude() NumericDimension {
+	return NumericDimension{
 		anonCollectionName: d.anonCollectionName,
 		fieldName:          d.fieldName + ".latitude",
 		originalRange:      d.originalRange.Latitude,
@@ -26,8 +26,8 @@ func (d *gpsDimension) getLatitude() numericDimension {
 	}
 }
 
-func (d *gpsDimension) getLongitude() numericDimension {
-	return numericDimension{
+func (d *gpsDimension) getLongitude() NumericDimension {
+	return NumericDimension{
 		anonCollectionName: d.anonCollectionName,
 		fieldName:          d.fieldName + ".longitude",
 		originalRange:      d.originalRange.Longitude,

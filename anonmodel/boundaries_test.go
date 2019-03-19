@@ -82,6 +82,29 @@ func TestNumericBoundary_GetGeneralizedValue(t *testing.T) {
 	})
 }
 
+func TestNumericRange_GetNormalizedRange(t *testing.T) {
+	tests := []struct {
+		originalMin, originalMax float64
+		min, max                 float64
+		expected                 float64
+	}{
+		{0.0, 10.0, 5.0, 10.0, 0.5},
+		{0.0, 10.0, 2.5, 10.0, 0.75},
+		{0.0, 10.0, 5.0, 7.5, 0.25},
+		{10.0, 10.0, 5.0, 7.5, 0.0},
+	}
+	for _, test := range tests {
+		t.Run("normalized range", func(t *testing.T) {
+			o := NewNumericRange(test.originalMin, test.originalMax)
+			r := NewNumericRange(test.min, test.max)
+			actual := r.GetNormalizedRange(o)
+			if actual != test.expected {
+				t.Errorf("expected %f got %f", test.expected, actual)
+			}
+		})
+	}
+}
+
 type MockBoundary struct {
 	value string
 }
@@ -94,4 +117,11 @@ func (b *MockBoundary) Clone() Boundary {
 
 func (b *MockBoundary) GetGeneralizedValue() string {
 	return b.value
+}
+
+func NewNumericRange(min, max float64) *NumericRange {
+	return &NumericRange{
+		Min: min,
+		Max: max,
+	}
 }
