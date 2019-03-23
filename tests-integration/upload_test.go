@@ -32,6 +32,29 @@ func TestApi_UploadSession(t *testing.T) {
 			t.Errorf("unexpected status: %v", status)
 		}
 	})
+
+	t.Run("delete upload session", func(t *testing.T) {
+		setup()
+		defer teardown()
+		_, sessRes := send("POST", upload, "u_session.json")
+		var session anonmodel.UploadSessionData
+		json.Unmarshal([]byte(sessRes), &session)
+		sessionPath := upload + "/" + session.SessionID
+		status, _ := call("DELETE", sessionPath)
+		if status != 204 {
+			t.Errorf("unexpected status: %v", status)
+		}
+	})
+
+	t.Run("delete non-existing upload session", func(t *testing.T) {
+		setup()
+		defer teardown()
+		sessionPath := upload + "/non-existing-session"
+		status, _ := call("DELETE", sessionPath)
+		if status != 404 {
+			t.Errorf("unexpected status: %v", status)
+		}
+	})
 }
 
 func TestApi_UploadData(t *testing.T) {
