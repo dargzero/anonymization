@@ -17,10 +17,14 @@ func call(method, operation string) (int, string) {
 	return read(res)
 }
 
-func send(method, apiPath, payloadName string) (int, string) {
-	req := request(method, apiPath, resource(payloadName))
+func send(method, apiPath string, payload io.Reader) (int, string) {
+	req := request(method, apiPath, payload)
 	res := do(req)
 	return read(res)
+}
+
+func sendResource(method, apiPath, payloadName string) (int, string) {
+	return send(method, apiPath, resource(payloadName))
 }
 
 func read(res *http.Response) (int, string) {

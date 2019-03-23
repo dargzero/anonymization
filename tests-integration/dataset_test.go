@@ -12,7 +12,7 @@ func TestApi_InvalidDataSet(t *testing.T) {
 
 	path := "/datasets/crate-bad"
 	payload := "ds_invalid.json"
-	status, _ := send("PUT", path, payload)
+	status, _ := sendResource("PUT", path, payload)
 	if status != 400 {
 		t.Errorf("unexpected status: %v", status)
 	}
@@ -24,7 +24,7 @@ func TestApi_DataSets(t *testing.T) {
 
 	t.Run("delete existing dataset", func(t *testing.T) {
 		path := "/datasets/delete-existing-test"
-		send("PUT", path, payload)
+		sendResource("PUT", path, payload)
 		status, _ := call("DELETE", path)
 		if status != 204 {
 			t.Errorf("delete: unexpected status: %v", status)
@@ -43,7 +43,7 @@ func TestApi_DataSets(t *testing.T) {
 	t.Run("create dataset", func(t *testing.T) {
 		path := "/datasets/create-dataset"
 		call("DELETE", path)
-		status, _ := send("PUT", path, payload)
+		status, _ := sendResource("PUT", path, payload)
 		if status != 201 {
 			t.Errorf("create: unexpected status: %v", status)
 		}
@@ -52,7 +52,7 @@ func TestApi_DataSets(t *testing.T) {
 	t.Run("get dataset metadata", func(t *testing.T) {
 		path := "/datasets/get-dataset-metadata"
 		call("DELETE", path)
-		send("PUT", path, payload)
+		sendResource("PUT", path, payload)
 		_, body := call("GET", path)
 		var actual anonmodel.Dataset
 		json.Unmarshal([]byte(body), &actual)
@@ -66,8 +66,8 @@ func TestApi_DataSets(t *testing.T) {
 		path2 := "/datasets/new-dataset2"
 		call("DELETE", path1)
 		call("DELETE", path2)
-		send("PUT", path1, payload)
-		send("PUT", path2, payload)
+		sendResource("PUT", path1, payload)
+		sendResource("PUT", path2, payload)
 		_, body := call("GET", "/datasets")
 		var actual []anonmodel.Dataset
 		json.Unmarshal([]byte(body), &actual)
