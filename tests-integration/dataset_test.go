@@ -3,18 +3,28 @@
 package tests_integration
 
 import (
-	json2 "encoding/json"
+	"encoding/json"
 	"github.com/dargzero/anonymization/anonmodel"
 	"testing"
 )
 
+func TestApi_InvalidDataSet(t *testing.T) {
+
+	path := "/datasets/crate-bad"
+	payload := "bad_dataset_req.json"
+	status, _ := send("PUT", path, payload)
+	if status != 400 {
+		t.Errorf("unexpected status: %v", status)
+	}
+}
+
 func TestApi_DataSets(t *testing.T) {
 
-	json := "simple_dataset_req.json"
+	payload := "simple_dataset_req.json"
 
 	t.Run("delete existing dataset", func(t *testing.T) {
 		path := "/datasets/delete-existing-test"
-		send("PUT", path, json)
+		send("PUT", path, payload)
 		status, _ := call("DELETE", path)
 		if status != 204 {
 			t.Errorf("delete: unexpected status: %v", status)
@@ -33,7 +43,7 @@ func TestApi_DataSets(t *testing.T) {
 	t.Run("create dataset", func(t *testing.T) {
 		path := "/datasets/create-dataset"
 		call("DELETE", path)
-		status, _ := send("PUT", path, json)
+		status, _ := send("PUT", path, payload)
 		if status != 201 {
 			t.Errorf("create: unexpected status: %v", status)
 		}
@@ -42,10 +52,10 @@ func TestApi_DataSets(t *testing.T) {
 	t.Run("get dataset metadata", func(t *testing.T) {
 		path := "/datasets/get-dataset-metadata"
 		call("DELETE", path)
-		send("PUT", path, json)
+		send("PUT", path, payload)
 		_, body := call("GET", path)
 		var actual anonmodel.Dataset
-		json2.Unmarshal([]byte(body), &actual)
+		json.Unmarshal([]byte(body), &actual)
 		if actual.Name != "get-dataset-metadata" {
 			t.Errorf("invalid dataset metadata: %v", body)
 		}
@@ -56,11 +66,11 @@ func TestApi_DataSets(t *testing.T) {
 		path2 := "/datasets/new-dataset2"
 		call("DELETE", path1)
 		call("DELETE", path2)
-		send("PUT", path1, json)
-		send("PUT", path2, json)
+		send("PUT", path1, payload)
+		send("PUT", path2, payload)
 		_, body := call("GET", "/datasets")
 		var actual []anonmodel.Dataset
-		json2.Unmarshal([]byte(body), &actual)
+		json.Unmarshal([]byte(body), &actual)
 
 		assertContains := func(coll []anonmodel.Dataset, name string) {
 			for _, ds := range coll {

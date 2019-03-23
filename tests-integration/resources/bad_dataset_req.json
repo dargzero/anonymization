@@ -1,0 +1,13 @@
+{
+  "settings": {
+    "k": 10,
+    "algorithm": "mondrian",
+    "mode": "single"
+  },
+  "fields": [
+    {
+      "name": "blah",
+      "mode": "qid"
+    }
+  ]
+}
