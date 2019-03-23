@@ -165,7 +165,7 @@ paths:
       responses:
         204:
           description: "Successfully uploaded"
-        404:
+        400:
           description: "The upload session with the specified ID was not found."
     delete:
       tags:

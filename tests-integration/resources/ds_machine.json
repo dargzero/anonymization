@@ -1,0 +1,54 @@
+{
+  "settings": {
+    "k": 5,
+    "algorithm": "mondrian",
+    "mode": "single"
+  },
+  "fields": [
+    {
+      "name": "company",
+      "mode": "id"
+    },
+    {
+      "name": "cpuName",
+      "mode": "drop"
+    },
+    {
+      "name": "name",
+      "mode": "id"
+    },
+    {
+      "name": "serial",
+      "mode": "id"
+    },
+    {
+      "name": "stackTrace",
+      "mode": "drop"
+    },
+    {
+      "name": "cpuSpeed",
+      "mode": "qid",
+      "type": "numeric"
+    },
+    {
+      "name": "freeMemory",
+      "mode": "qid",
+      "type": "numeric"
+    },
+    {
+      "name": "visibleMemory",
+      "mode": "qid",
+      "type": "numeric"
+    },
+    {
+      "name": "os",
+      "mode": "qid",
+      "type": "prefix"
+    },
+    {
+      "name": "message",
+      "mode": "qid",
+      "type": "prefix"
+    }
+  ]
+}

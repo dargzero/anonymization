@@ -1,0 +1,33 @@
+{
+  "settings": {
+    "k": 3,
+    "algorithm": "mondrian",
+    "mode": "single"
+  },
+  "fields": [
+    {
+      "name": "ssn",
+      "mode": "id"
+    },
+    {
+      "name": "name",
+      "mode": "qid",
+      "type": "prefix"
+    },
+    {
+      "name": "age",
+      "mode": "qid",
+      "type": "numeric"
+    },
+    {
+      "name": "children",
+      "mode": "qid",
+      "type": "numeric"
+    },
+    {
+      "name": "illness",
+      "mode": "qid",
+      "type": "prefix"
+    }
+  ] 
+}
