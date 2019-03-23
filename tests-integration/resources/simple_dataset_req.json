@@ -6,20 +6,28 @@
   },
   "fields": [
     {
-      "name": "company",
+      "name": "ssn",
       "mode": "id"
     },
     {
       "name": "name",
-      "mode": "id"
+      "mode": "qid",
+      "type": "prefix"
     },
     {
-      "name": "serial",
-      "mode": "id"
+      "name": "age",
+      "mode": "qid",
+      "type": "numeric"
     },
     {
-      "name": "stackTrace",
-      "mode": "drop"
+      "name": "children",
+      "mode": "qid",
+      "type": "numeric"
+    },
+    {
+      "name": "illness",
+      "mode": "qid",
+      "type": "prefix"
     }
   ] 
 }
