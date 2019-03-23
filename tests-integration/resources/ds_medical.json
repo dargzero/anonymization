@@ -1,6 +1,6 @@
 {
   "settings": {
-    "k": 10,
+    "k": 3,
     "algorithm": "mondrian",
     "mode": "single"
   },

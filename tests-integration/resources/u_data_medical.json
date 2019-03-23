@@ -1,0 +1,65 @@
+[
+  {
+    "ssn": "12345",
+    "name": "John",
+    "age": 40,
+    "children": 0,
+    "illness": "edf"
+  },
+  {
+    "ssn": "19456",
+    "name": "Jack",
+    "age": 35,
+    "children": 2,
+    "illness": "flu"
+  },
+  {
+    "ssn": "90376",
+    "name": "Nancy",
+    "age": 28,
+    "children": 1,
+    "illness": "depression"
+  },
+  {
+    "ssn": "17593",
+    "name": "June",
+    "age": 38,
+    "children": 2,
+    "illness": "flu"
+  },
+  {
+    "ssn": "39683",
+    "name": "Michael",
+    "age": 19,
+    "children": 0,
+    "illness": "adh"
+  },
+  {
+    "ssn": "35743",
+    "name": "Melanie",
+    "age": 22,
+    "children": 0,
+    "illness": "broken limb"
+  },
+  {
+    "ssn": "29684",
+    "name": "Jennifer",
+    "age": 30,
+    "children": 1,
+    "illness": "cancer"
+  },
+  {
+    "ssn": "67384",
+    "name": "William",
+    "age": 47,
+    "children": 1,
+    "illness": "depression"
+  },
+  {
+    "ssn": "29687",
+    "name": "Adam",
+    "age": 25,
+    "children": 0,
+    "illness": "allergic"
+  }
+]
