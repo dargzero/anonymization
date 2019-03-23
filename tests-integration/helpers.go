@@ -17,8 +17,8 @@ func call(method, operation string) (int, string) {
 	return read(res)
 }
 
-func send(method, apiPath, payload string) (int, string) {
-	req := request(method, apiPath, resource(payload))
+func send(method, apiPath, payloadName string) (int, string) {
+	req := request(method, apiPath, resource(payloadName))
 	res := do(req)
 	return read(res)
 }
