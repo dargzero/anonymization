@@ -3,7 +3,6 @@
 package tests_integration
 
 import (
-	"encoding/json"
 	"github.com/dargzero/anonymization/anonmodel"
 	"testing"
 )
@@ -55,7 +54,7 @@ func TestApi_DataSets(t *testing.T) {
 		sendResource("PUT", path, payload)
 		_, body := call("GET", path)
 		var actual anonmodel.Dataset
-		json.Unmarshal([]byte(body), &actual)
+		mustUnmarshal([]byte(body), &actual)
 		if actual.Name != "get-dataset-metadata" {
 			t.Errorf("invalid dataset metadata: %v", body)
 		}
@@ -70,7 +69,7 @@ func TestApi_DataSets(t *testing.T) {
 		sendResource("PUT", path2, payload)
 		_, body := call("GET", "/datasets")
 		var actual []anonmodel.Dataset
-		json.Unmarshal([]byte(body), &actual)
+		mustUnmarshal([]byte(body), &actual)
 
 		assertContains := func(coll []anonmodel.Dataset, name string) {
 			for _, ds := range coll {

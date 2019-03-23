@@ -4,6 +4,9 @@ package tests_integration
 
 import (
 	"bytes"
+	"encoding/json"
+	"fmt"
+	"github.com/dargzero/anonymization/swagger"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -60,4 +63,38 @@ func resource(name string) io.Reader {
 
 func path(p string) string {
 	return baseUrl + p
+}
+
+func setup(dataset, datasetType string) {
+	path := "/datasets/" + dataset
+	call("DELETE", path)
+	sendResource("PUT", path, datasetType)
+}
+
+func setupSession(dataset, datasetType string) string {
+	setup(dataset, datasetType)
+	_, res := send("POST", "/upload", sessionCfg(dataset))
+	var session swagger.CreateUploadSessionResponse
+	mustUnmarshal([]byte(res), &session)
+	return fmt.Sprintf("/upload/%s?last=true", session.SessionID)
+}
+
+func teardown(dataset string) {
+	path := "/datasets/" + dataset
+	call("DELETE", path)
+}
+
+func sessionCfg(dataset string) io.Reader {
+	req := swagger.CreateUploadSessionRequest{
+		DatasetName: dataset,
+	}
+	b, _ := json.Marshal(req)
+	return bytes.NewReader(b)
+}
+
+func mustUnmarshal(data []byte, v interface{}) {
+	err := json.Unmarshal(data, v)
+	if err != nil {
+		panic(err)
+	}
 }
