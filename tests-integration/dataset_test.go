@@ -10,7 +10,7 @@ import (
 
 func TestApi_DataSets(t *testing.T) {
 
-	json := "create_dataset_request.json"
+	json := "simple_dataset_req.json"
 
 	t.Run("delete existing dataset", func(t *testing.T) {
 		path := "/datasets/delete-existing-test"
