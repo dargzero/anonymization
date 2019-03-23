@@ -1,76 +1,91 @@
 package anonbll
 
 import (
-	"fmt"
-	"math"
+	"errors"
 	"regexp"
+	"strconv"
 	"strings"
 )
 
-//FindFormat ... (coord string) (format string)
-func FindFormat(coord string) (format string) {
-	format = "ERR"
-	DDFormat := "/([-+]?[1-9]\\d*([,. ]\\d\\d)*)°?[ ,]*[-+]?[1-9]\\d*([,. ]\\d\\d*)*°?/"
-	DMSFormat := "/[NS][ ]*[1-9]\\d*°[ ]*[1-9]\\d*['][ ]*[1-9]\\d*([,.]\\d*)?(\"|'')[ ,]*[WE][ ]*[1-9]\\d*°[ ]*[1-9]\\d*['][ ]*[1-9]\\d*([,.]\\d*)?(\"|'')[ \n,.]*/"
-	match, _ := regexp.MatchString(DDFormat, coord)
-	if match {
-		format = "DD"
-	}
-	match, _ = regexp.MatchString(DMSFormat, coord)
-	if match {
-		format = "DMS"
-	}
-	return
-}
+const ddRegex = "([-+]?[0-9]*\\.?[0-9]+)°?[,\\s]+([-+]?[0-9]*\\.?[0-9]+)°?"
+const dmsRegex = "([NS])\\s*([1-9]\\d*)°\\s*(?:([1-9]\\d*)'?)?\\s*(?:([1-9]\\d*)\"?)?\\s*,\\s*([EW])\\s*([1-9]\\d*)°\\s*(?:([1-9]\\d*)'?)?\\s*(?:([1-9]\\d*)\"?)?\\s*"
 
-func readDMS(coords string) (Latitude float64, Longitude float64, err error) {
-	var Lat, Lon uint8
-	var dLat, mLat, sLat, dLon, mLon, sLon int
-	coords = strings.ToUpper(coords)
-	strings.Replace(coords, "''", "\"", -1)
-	strings.Replace(coords, " ", "", -1)
-	strings.Replace(coords, ",", "", -1)
-	fmt.Sscanf(coords, "%c%d°%d'%d\"%c%d°%d'%d\"", &Lat, &dLat, &mLat, &sLat, &Lon, &dLon, &mLon, &sLon)
-
-	Latitude = float64(dLat) + float64(mLat)/60 + float64(sLat)/360
-	if Lat == 'W' {
-		Latitude = -Latitude
-	} else if Lat != 'E' {
-		err = fmt.Errorf("Bad coord string")
-		return
-	}
-
-	Longitude = float64(dLon) + float64(mLon)/60 + float64(sLon)/360
-	if Lat == 'S' {
-		Longitude = -Longitude
-	} else if Lat != 'N' {
-		err = fmt.Errorf("Bad coord string")
-		return
-	}
-	err = nil
-	return
-}
-
-func readDD(coords string) (Latitude float64, Longitude float64, err error) {
-	strings.Replace(coords, " ", "", -1)
-	fmt.Sscanf(coords, "%f,%f", &Latitude, &Longitude)
-	return
-}
-
-func readERROR(coords string) (Latitude float64, Longitude float64, err error) {
-	Latitude = math.NaN()
-	Longitude = math.NaN()
-	err = fmt.Errorf("Unrecognised coord format")
-	return
-}
-
-//ReadCordsValue a
-func ReadCordsValue(coords string, format string) (Latitude, Longitude float64, err error) {
+func ParseCoordinate(coordinate string) (lat, lon float64, err error) {
+	format := discoverFormat(coordinate)
 	if format == "DD" {
-		return readDD(coords)
+		return readDD(coordinate)
 	} else if format == "DMS" {
-		return readDMS(coords)
+		return readDMS(coordinate)
 	} else {
-		return readERROR(coords)
+		return 0, 0, errors.New("unrecognized format")
 	}
+}
+
+func discoverFormat(coordinates string) string {
+	if matches(dmsRegex, coordinates) {
+		return "DMS"
+	}
+	if matches(ddRegex, coordinates) {
+		return "DD"
+	}
+	return "ERR"
+}
+
+func matches(re, str string) bool {
+	m, _ := regexp.MatchString(re, str)
+	return m
+}
+
+func readDMS(coords string) (lat float64, lon float64, err error) {
+	re := regexp.MustCompile(dmsRegex)
+	groups := re.FindStringSubmatch(coords)
+	lat, err = parseDmsCoordinateFromSegments(groups[1], groups[2], groups[3], groups[4])
+	if err != nil {
+		return
+	}
+	lon, err = parseDmsCoordinateFromSegments(groups[5], groups[6], groups[7], groups[8])
+	if err != nil {
+		return
+	}
+	return
+}
+
+func parseDmsCoordinateFromSegments(seg1, seg2, seg3, seg4 string) (float64, error) {
+	lat1, err := parseDmsSegment(seg2, false)
+	if err != nil {
+		return 0, err
+	}
+	lat2, err := parseDmsSegment(seg3, true)
+	if err != nil {
+		return 0, err
+	}
+	lat3, err := parseDmsSegment(seg4, true)
+	if err != nil {
+		return 0, err
+	}
+	lat := lat1 + lat2/60.0 + lat3/360.0
+	hemisphere := strings.ToLower(seg1)
+	if hemisphere == "s" || hemisphere == "w" {
+		lat = -lat
+	}
+	return lat, nil
+}
+
+func parseDmsSegment(seg string, optional bool) (val float64, err error) {
+	val = 0.0
+	if !optional || optional && seg != "" {
+		val, err = strconv.ParseFloat(seg, 64)
+	}
+	return
+}
+
+func readDD(coords string) (lat, lon float64, err error) {
+	re := regexp.MustCompile(ddRegex)
+	groups := re.FindStringSubmatch(coords)
+	lat, err = strconv.ParseFloat(groups[1], 64)
+	if err != nil {
+		return
+	}
+	lon, err = strconv.ParseFloat(groups[2], 64)
+	return
 }

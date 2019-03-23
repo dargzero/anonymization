@@ -6,8 +6,8 @@ import (
 )
 
 //MakeTypeConversionTable   asdasd
-func MakeTypeConversionTable(datasetName string) (table map[string]anonmodel.TypeConversionfunc, err error) {
-	table = make(map[string]anonmodel.TypeConversionfunc, 0)
+func MakeTypeConversionTable(datasetName string) (table map[string]anonmodel.TypeConversionFunc, err error) {
+	table = make(map[string]anonmodel.TypeConversionFunc, 0)
 	dataset, e := GetDataset(datasetName)
 	log.Println(e)
 	for _, field := range dataset.Fields {

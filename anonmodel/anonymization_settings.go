@@ -9,7 +9,7 @@ type AnonymizationSettings struct {
 	Mode      string `json:"mode" bson:"mode"`
 }
 
-func (settings *AnonymizationSettings) validate() error {
+func (settings *AnonymizationSettings) Validate() error {
 	if settings.K < 2 {
 		return fmt.Errorf("The 'k' value should be at least 2, got: %v", settings.K)
 	}
