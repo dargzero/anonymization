@@ -1,0 +1,25 @@
+{
+  "settings": {
+    "k": 10,
+    "algorithm": "mondrian",
+    "mode": "single"
+  },
+  "fields": [
+    {
+      "name": "company",
+      "mode": "id"
+    },
+    {
+      "name": "name",
+      "mode": "id"
+    },
+    {
+      "name": "serial",
+      "mode": "id"
+    },
+    {
+      "name": "stackTrace",
+      "mode": "drop"
+    }
+  ] 
+}
