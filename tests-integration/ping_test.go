@@ -1,3 +1,5 @@
+//+build integration
+
 package tests_integration
 
 import "testing"
