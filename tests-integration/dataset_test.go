@@ -11,7 +11,7 @@ import (
 func TestApi_InvalidDataSet(t *testing.T) {
 
 	path := "/datasets/crate-bad"
-	payload := "bad_dataset_req.json"
+	payload := "ds_invalid.json"
 	status, _ := send("PUT", path, payload)
 	if status != 400 {
 		t.Errorf("unexpected status: %v", status)
@@ -20,7 +20,7 @@ func TestApi_InvalidDataSet(t *testing.T) {
 
 func TestApi_DataSets(t *testing.T) {
 
-	payload := "simple_dataset_req.json"
+	payload := "ds_medical.json"
 
 	t.Run("delete existing dataset", func(t *testing.T) {
 		path := "/datasets/delete-existing-test"
