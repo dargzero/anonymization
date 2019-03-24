@@ -1,5 +1,4 @@
-bitbucket.org/dargzero/k-anon v0.0.0-20190309162513-ef418f72e4eb h1:uNA6dZKnanmrYLOmHWBYEk4Q/Ee7jfnRe1HOo4RLtqw=
-bitbucket.org/dargzero/k-anon v0.0.0-20190309162513-ef418f72e4eb/go.mod h1:+93fOP1Hp60NGXsI36GlVkodJQninvtMTLMEvvTQGgc=
+bitbucket.org/dargzero/k-anon v1.0.0/go.mod h1:+93fOP1Hp60NGXsI36GlVkodJQninvtMTLMEvvTQGgc=
 github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8 h1:DujepqpGd1hyOd7aW59XpK7Qymp8iy83xq74fLr21is=
 github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8/go.mod h1:xkRDCp4j0OGD1HRkm4kmhM+pmpv3AKq5SU7GMg4oO/Q=
 github.com/gorilla/mux v1.7.0 h1:tOSd0UKHQd6urX6ApfOn4XdBMY6Sh1MfxV3kmaazO+U=
@@ -12,5 +11,4 @@ golang.org/x/net v0.0.0-20190213061140-3a22650c66bd/go.mod h1:mL1N/T3taQHkDXs73r
 golang.org/x/net v0.0.0-20190301231341-16b79f2e4e95/go.mod h1:mL1N/T3taQHkDXs73rZJwtUhF3w3ftmwwsq0BUmARs4=
 golang.org/x/tools v0.0.0-20190206041539-40960b6deb8e/go.mod h1:n7NCudcB/nEzxVGmLbDWY5pfWTLqBcC2KZ6jyYvM4mQ=
 golang.org/x/tools v0.0.0-20190308174544-00c44ba9c14f/go.mod h1:25r3+/G6/xytQM8iWZKq3Hn0kr0rgFKPUNVEL/dr3z4=
-gonum.org/v1/gonum v0.0.0-20190309094639-a2ec8ac13aec h1:/bDg2qqDhtwoKPIYOBL81HHgtlKJQ0E+EW7BDfhcYZs=
 gonum.org/v1/gonum v0.0.0-20190309094639-a2ec8ac13aec/go.mod h1:jevfED4GnIEnJrWW55YmY9DMhajHcnkqVnEXmEtMyNI=
