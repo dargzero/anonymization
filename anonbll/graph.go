@@ -34,11 +34,11 @@ func (g *graphAnonymizer) getSchema() (*model.Schema, error) {
 		if err := validate(field); err != nil {
 			return nil, err
 		}
-		column := &model.Column{
-			Name:        field.Name,
-			Generalizer: nil, // TODO
-		}
-		schema.Columns = append(schema.Columns, column)
+		//column := &model.Column{
+		//	Name:        field.Name,
+		//	Generalizer: nil, // TODO
+		//}
+		//schema.Columns = append(schema.Columns, column)
 	}
 	return schema, nil
 }
