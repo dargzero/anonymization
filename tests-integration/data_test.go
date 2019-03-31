@@ -19,7 +19,7 @@ func TestApi_Data(t *testing.T) {
 		path := "/data/" + dataset
 		status, body := waitUntilDataAppears(path)
 		if status != 200 {
-			t.Errorf("unexpeted status: %v, %v", status, body)
+			t.Errorf("unexpected status: %v, %v", status, body)
 		}
 	})
 
@@ -29,7 +29,7 @@ func TestApi_Data(t *testing.T) {
 		defer teardown(dataset)
 		status, body := waitUntilDataAppears("/anon/" + dataset)
 		if status != 200 {
-			t.Errorf("unexpeted status: %v, %v", status, body)
+			t.Errorf("unexpected status: %v, %v", status, body)
 		}
 		t.Logf("%v", body)
 	})
