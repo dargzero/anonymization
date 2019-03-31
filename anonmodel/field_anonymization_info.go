@@ -7,9 +7,10 @@ import (
 
 // FieldAnonymizationInfo stores how each data field should be handled during anonymization
 type FieldAnonymizationInfo struct {
-	Name string `json:"name" bson:"name"`
-	Mode string `json:"mode" bson:"mode"`
-	Type string `json:"type" bson:"type"`
+	Name string            `json:"name" bson:"name"`
+	Mode string            `json:"mode" bson:"mode"`
+	Type string            `json:"type" bson:"type"`
+	Opts map[string]string `json:"opts" bson:"opts"`
 }
 
 func (fieldInfo *FieldAnonymizationInfo) Validate() error {

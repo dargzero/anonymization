@@ -8,12 +8,22 @@
     {
       "name": "age",
       "mode": "qid",
-      "type": "numeric"
+      "type": "numeric",
+      "opts": {
+        "generalizer": "int-range",
+        "min": "0",
+        "max": "150"
+      }
     },
     {
       "name": "salary",
       "mode": "qid",
-      "type": "numeric"
+      "type": "numeric",
+      "opts": {
+        "generalizer": "int-range",
+        "min": "0",
+        "max": "200000"
+      }
     }
   ] 
 }
