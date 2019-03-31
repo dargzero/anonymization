@@ -51,14 +51,14 @@ func TestApi_Data(t *testing.T) {
 				path := test.path + test.dataset
 				status, body := waitUntilDataAppears(path)
 				if status != 200 {
-					t.Errorf("unexpeted status: %v, %v", status, body)
+					t.Errorf("unexpected status: %v, %v", status, body)
 				}
 				var result swagger.ListDataResponse
 				mustUnmarshal([]byte(body), &result)
 				id := result.Result[0]["_id"]
 				status, body = call("GET", fmt.Sprintf("%s/%s", path, id))
 				if status != 200 {
-					t.Errorf("unexpeted status: %v, %v", status, body)
+					t.Errorf("unexpected status: %v, %v", status, body)
 				}
 				var doc anonmodel.Document
 				mustUnmarshal([]byte(body), &doc)
