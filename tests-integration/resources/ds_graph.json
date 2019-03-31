@@ -1,0 +1,19 @@
+{
+  "settings": {
+    "k": 3,
+    "algorithm": "graph",
+    "mode": "single"
+  },
+  "fields": [
+    {
+      "name": "age",
+      "mode": "qid",
+      "type": "numeric"
+    },
+    {
+      "name": "salary",
+      "mode": "qid",
+      "type": "numeric"
+    }
+  ] 
+}

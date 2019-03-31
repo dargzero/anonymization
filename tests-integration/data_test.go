@@ -14,7 +14,7 @@ func TestApi_Data(t *testing.T) {
 
 	t.Run("download dataset", func(t *testing.T) {
 		dataset := "test-download-dataset"
-		uploadTestData(dataset)
+		uploadTestData(dataset, "machine")
 		defer teardown(dataset)
 		path := "/data/" + dataset
 		status, body := waitUntilDataAppears(path)
@@ -25,7 +25,7 @@ func TestApi_Data(t *testing.T) {
 
 	t.Run("download anonymized dataset", func(t *testing.T) {
 		dataset := "test-anon-dataset"
-		uploadTestData(dataset)
+		uploadTestData(dataset, "machine")
 		defer teardown(dataset)
 		status, body := waitUntilDataAppears("/anon/" + dataset)
 		if status != 200 {
@@ -46,7 +46,7 @@ func TestApi_Data(t *testing.T) {
 
 		for _, test := range tests {
 			t.Run(test.dataset, func(t *testing.T) {
-				uploadTestData(test.dataset)
+				uploadTestData(test.dataset, "machine")
 				defer teardown(test.dataset)
 				path := test.path + test.dataset
 				status, body := waitUntilDataAppears(path)
@@ -70,9 +70,20 @@ func TestApi_Data(t *testing.T) {
 	})
 }
 
-func uploadTestData(dataset string) {
-	sessionPath := setupSession(dataset, "ds_machine.json")
-	status, body := sendResource("POST", sessionPath, "u_data_machine.json")
+func TestApi_GraphAlgorithm(t *testing.T) {
+	dataset := "graph-algorithm-dataset"
+	uploadTestData(dataset, "graph")
+	defer teardown(dataset)
+	//status, body := waitUntilDataAppears("/anon/" + dataset)
+	//if status != 200 {
+	//	t.Errorf("unexpected status: %v, %v", status, body)
+	//}
+	//t.Logf("%v", body)
+}
+
+func uploadTestData(dataset string, resource string) {
+	sessionPath := setupSession(dataset, "ds_"+resource+".json")
+	status, body := sendResource("POST", sessionPath, "u_data_"+resource+".json")
 	if status != 200 {
 		panic(fmt.Sprintf("upload failed: %v, %v", status, body))
 	}
