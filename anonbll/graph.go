@@ -8,11 +8,10 @@ import (
 	"strconv"
 )
 
-const modeQid = "qid"
 const typeNumeric = "numeric"
+const typePrefix = "prefix"
 const numericTypeInt = "int"
 const numericTypeFloat = "float"
-const typePrefix = "prefix"
 const optType = "type"
 const optMin = "min"
 const optMax = "max"
