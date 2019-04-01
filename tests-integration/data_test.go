@@ -74,11 +74,11 @@ func TestApi_GraphAlgorithm(t *testing.T) {
 	dataset := "graph-algorithm-dataset"
 	uploadTestData(dataset, "graph")
 	defer teardown(dataset)
-	//status, body := waitUntilDataAppears("/anon/" + dataset)
-	//if status != 200 {
-	//	t.Errorf("unexpected status: %v, %v", status, body)
-	//}
-	//t.Logf("%v", body)
+	status, body := waitUntilDataAppears("/anon/" + dataset)
+	if status != 200 {
+		t.Errorf("unexpected status: %v, %v", status, body)
+	}
+	t.Logf("%v", body)
 }
 
 func uploadTestData(dataset string, resource string) {
