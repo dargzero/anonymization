@@ -10,7 +10,13 @@ type FieldAnonymizationInfo struct {
 	Name string            `json:"name" bson:"name"`
 	Mode string            `json:"mode" bson:"mode"`
 	Type string            `json:"type" bson:"type"`
-	Opts map[string]string `json:"opts" bson:"opts"`
+	Opts ExtraFieldOptions `json:"opts" bson:"opts"`
+}
+
+type ExtraFieldOptions struct {
+	Type string   `json:"type" bson:"type"`
+	Min  *float64 `json:"min" bson:"min"`
+	Max  *float64 `json:"max" bson:"max"`
 }
 
 func (fieldInfo *FieldAnonymizationInfo) Validate() error {

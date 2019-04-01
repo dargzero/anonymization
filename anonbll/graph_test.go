@@ -1,160 +1,139 @@
 package anonbll
 
 import (
-	"bitbucket.org/dargzero/k-anon/generalization"
+	"fmt"
 	"github.com/dargzero/anonymization/anonmodel"
 	"testing"
 )
 
-func TestGraphAnonymizer_GetSchema(t *testing.T) {
+func TestGraphAnonymizer_ValidateExtraOptions(t *testing.T) {
 
-	t.Run("unknown field type", func(t *testing.T) {
-		a := newAnonymizer(newField("col", "qid", "unknown"))
-		_, err := a.getSchema()
+	g := simpleAnonymizer("numeric")
+	field := firstField(g)
+
+	t.Run("unknown sub-type", func(t *testing.T) {
+		field.Opts.Type = "unknown"
+		err := g.validateExtraOptions()
 		if err == nil {
 			t.Errorf("expected error, got none")
 		}
 	})
 
-	t.Run("prefix column type", func(t *testing.T) {
-
-		col1 := newField("col1", "qid", "prefix")
-		a := newAnonymizer(col1)
-
-		t.Run("prefix column with defaults", func(t *testing.T) {
-			schema, err := a.getSchema()
-			if err != nil {
-				t.Errorf("unexpected error: %v", err)
-			}
-			g := schema.Columns[0].GetGeneralizer().(*generalization.PrefixGeneralizer)
-			if g.MaxWords != 100 {
-				t.Errorf("expected %v, got %v", 100, g.MaxWords)
-			}
-		})
-
-		t.Run("prefix column with max words", func(t *testing.T) {
-			addOption(col1, "max", "1000")
-			schema, err := a.getSchema()
-			if err != nil {
-				t.Errorf("unexpected error: %v", err)
-			}
-			g := schema.Columns[0].GetGeneralizer().(*generalization.PrefixGeneralizer)
-			if g.MaxWords != 1000 {
-				t.Errorf("expected %v, got %v", 1000, g.MaxWords)
-			}
-		})
-
-		t.Run("prefix column with invalid max option", func(t *testing.T) {
-			addOption(col1, "max", "invalid")
-			_, err := a.getSchema()
-			if err == nil {
-				t.Errorf("expected error, got none")
-			}
-		})
-
-	})
-
-	t.Run("numeric column type", func(t *testing.T) {
-
-		t.Run("unknown numeric type", func(t *testing.T) {
-			col1 := newField("col1", "qid", "numeric")
-			addOption(col1, "type", "unknown")
-			a := newAnonymizer(col1)
-			_, err := a.getSchema()
-			if err == nil {
-				t.Errorf("expected error, got none")
-			}
-		})
-
-		tests := []string{"int", "float"}
-
-		for _, test := range tests {
-
-			t.Run("column type "+test, func(t *testing.T) {
-
-				col1 := newField("col1", "qid", "numeric")
-				addOption(col1, "type", test)
-				a := newAnonymizer(col1)
-
-				t.Run("missing min option", func(t *testing.T) {
-					_, err := a.getSchema()
-					if err == nil {
-						t.Errorf("expected error, got none")
-					}
-				})
-
-				t.Run("missing max option", func(t *testing.T) {
-					addOption(col1, "min", "10")
-					_, err := a.getSchema()
-					if err == nil {
-						t.Errorf("expected error, got none")
-					}
-				})
-
-				t.Run("cannot parse min", func(t *testing.T) {
-					addOption(col1, "min", "X")
-					_, err := a.getSchema()
-					if err == nil {
-						t.Errorf("expected error, got none")
-					}
-				})
-
-				t.Run("cannot parse max", func(t *testing.T) {
-					addOption(col1, "min", "10")
-					addOption(col1, "max", "X")
-					_, err := a.getSchema()
-					if err == nil {
-						t.Errorf("expected error, got none")
-					}
-				})
-
-				t.Run("proper int column", func(t *testing.T) {
-					addOption(col1, "min", "10")
-					addOption(col1, "max", "20")
-					_, err := a.getSchema()
-					if err != nil {
-						t.Errorf("unexpected error: %v", err)
-					}
-				})
-
-			})
+	t.Run("missing min", func(t *testing.T) {
+		field.Opts.Type = "float"
+		err := g.validateExtraOptions()
+		if err == nil {
+			t.Errorf("expected error, got none")
 		}
-
-		t.Run("default column type", func(t *testing.T) {
-			col1 := newField("col1", "qid", "numeric")
-			addOption(col1, "min", "0.5")
-			addOption(col1, "max", "1.0")
-			a := newAnonymizer(col1)
-			schema, _ := a.getSchema()
-			actual := schema.Columns[0].GetName()
-			if actual != "col1" {
-				t.Errorf("expected %v, got %v", "col1", actual)
-			}
-			if schema.Columns[0].GetGeneralizer() == nil {
-				t.Errorf("expected generalizer instance, got nil")
-			}
-		})
 	})
 
+	t.Run("missing max", func(t *testing.T) {
+		field.Opts.Type = "float"
+		min := 0.5
+		field.Opts.Min = &min
+		err := g.validateExtraOptions()
+		if err == nil {
+			t.Errorf("expected error, got none")
+		}
+	})
+
+	t.Run("no validation errors", func(t *testing.T) {
+		field.Opts.Type = "float"
+		min := 0.5
+		max := 1.5
+		field.Opts.Min = &min
+		field.Opts.Max = &max
+		err := g.validateExtraOptions()
+		if err != nil {
+			t.Errorf("unexpected error: %v", err)
+		}
+	})
 }
 
-func newAnonymizer(fields ...*anonmodel.FieldAnonymizationInfo) *graphAnonymizer {
-	a := &graphAnonymizer{}
-	for _, field := range fields {
-		a.qidFields = append(a.qidFields, field)
+func TestGraphAnonymizer_GetSchema(t *testing.T) {
+
+	g := getTestAnonymizer()
+	schema := g.getSchema()
+
+	for i, col := range schema.Columns {
+		actual := col.GetName()
+		expected := fmt.Sprintf("Col%d", i)
+		if expected != actual {
+			t.Errorf("expected %v, got %v", expected, actual)
+		}
+		gen := col.GetGeneralizer()
+		if gen == nil {
+			t.Errorf("expected generalizer, got nil")
+		}
 	}
-	return a
+
 }
 
-func newField(name, mode, ft string) *anonmodel.FieldAnonymizationInfo {
-	return &anonmodel.FieldAnonymizationInfo{
-		Name: name,
-		Mode: mode,
-		Type: ft,
-		Opts: make(map[string]string, 0),
+func simpleAnonymizer(fieldType string) *graphAnonymizer {
+	return &graphAnonymizer{
+		qidFields: []anonmodel.FieldAnonymizationInfo{
+			{
+				Name: "Col0",
+				Mode: "qid",
+				Type: fieldType,
+				Opts: anonmodel.ExtraFieldOptions{},
+			},
+		},
 	}
 }
 
-func addOption(field *anonmodel.FieldAnonymizationInfo, key, value string) {
-	field.Opts[key] = value
+func firstField(anonymizer *graphAnonymizer) *anonmodel.FieldAnonymizationInfo {
+	return &anonymizer.qidFields[0]
+}
+
+func getTestAnonymizer() *graphAnonymizer {
+	min := 0.5
+	max := 1.0
+	return &graphAnonymizer{
+		qidFields: []anonmodel.FieldAnonymizationInfo{
+			{
+				Name: "Col0",
+				Mode: "qid",
+				Type: "numeric",
+				Opts: anonmodel.ExtraFieldOptions{
+					Type: "float",
+					Min:  &min,
+					Max:  &max,
+				},
+			},
+			{
+				Name: "Col1",
+				Mode: "qid",
+				Type: "numeric",
+				Opts: anonmodel.ExtraFieldOptions{
+					Min: &min,
+					Max: &max,
+				},
+			},
+			{
+				Name: "Col2",
+				Mode: "qid",
+				Type: "numeric",
+				Opts: anonmodel.ExtraFieldOptions{
+					Type: "int",
+					Min:  &min,
+					Max:  &max,
+				},
+			},
+			{
+				Name: "Col3",
+				Mode: "qid",
+				Type: "prefix",
+				Opts: anonmodel.ExtraFieldOptions{},
+			},
+			{
+				Name: "Col4",
+				Mode: "qid",
+				Type: "prefix",
+				Opts: anonmodel.ExtraFieldOptions{
+					Max: &max,
+				},
+			},
+		},
+	}
 }

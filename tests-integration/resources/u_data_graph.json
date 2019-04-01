@@ -1,50 +1,50 @@
 [
   {
-    "age": "38",
-    "salary": "13900"
+    "age": 38,
+    "salary": 13900
   },
   {
-    "age": "45",
-    "salary": "59000"
+    "age": 45,
+    "salary": 59000
   },
   {
-    "age": "23",
-    "salary": "27000"
+    "age": 23,
+    "salary": 27000
   },
   {
-    "age": "30",
-    "salary": "45000"
+    "age": 30,
+    "salary": 45000
   },
   {
-    "age": "33",
-    "salary": "90000"
+    "age": 33,
+    "salary": 90000
   },
   {
-    "age": "53",
-    "salary": "39000"
+    "age": 53,
+    "salary": 39000
   },
   {
-    "age": "18",
-    "salary": "12000"
+    "age": 18,
+    "salary": 12000
   },
   {
-    "age": "25",
-    "salary": "42000"
+    "age": 25,
+    "salary": 42000
   },
   {
-    "age": "34",
-    "salary": "51000"
+    "age": 34,
+    "salary": 51000
   },
   {
-    "age": "30",
-    "salary": "26000"
+    "age": 30,
+    "salary": 26000
   },
   {
-    "age": "30",
-    "salary": "34000"
+    "age": 30,
+    "salary": 34000
   },
   {
-    "age": "29",
-    "salary": "27000"
+    "age": 29,
+    "salary": 27000
   }
 ]

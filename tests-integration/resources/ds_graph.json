@@ -11,8 +11,8 @@
       "type": "numeric",
       "opts": {
         "type": "int",
-        "min": "0",
-        "max": "150"
+        "min": 0,
+        "max": 150
       }
     },
     {
@@ -21,8 +21,8 @@
       "type": "numeric",
       "opts": {
         "type": "int",
-        "min": "0",
-        "max": "200000"
+        "min": 0,
+        "max": 200000
       }
     }
   ] 
