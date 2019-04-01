@@ -46,8 +46,11 @@ func (g *graphAnonymizer) anonymize() (err error) {
 		Table: table,
 	}
 
-	anonymizer.Anonymize()
+	if err = anonymizer.Anonymize(); err != nil {
+		return
+	}
 
+	fmt.Printf("%v", anonymizer.Table)
 	// TODO: persist data
 
 	return errors.New("not implemented")
