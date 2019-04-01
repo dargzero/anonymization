@@ -6,6 +6,10 @@
   },
   "fields": [
     {
+      "name": "name",
+      "mode": "drop"
+    },
+    {
       "name": "age",
       "mode": "qid",
       "type": "numeric",
@@ -24,6 +28,14 @@
         "min": 0,
         "max": 200000
       }
+    },
+    {
+      "name": "motto",
+      "mode": "qid",
+      "type": "prefix",
+      "opts": {
+        "max": 150
+      }
     }
-  ] 
+  ]
 }

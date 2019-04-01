@@ -1,50 +1,74 @@
 [
   {
+    "name": "Joe",
     "age": 38,
-    "salary": 13900
+    "salary": 13900,
+    "motto": "cats are fluffy"
   },
   {
+    "name": "Janet",
     "age": 45,
-    "salary": 59000
+    "salary": 59000,
+    "motto": "cats are egoistic"
   },
   {
+    "name": "Jeff",
     "age": 23,
-    "salary": 27000
+    "salary": 27000,
+    "motto": "cats are wonderful"
   },
   {
+    "name": "Jill",
     "age": 30,
-    "salary": 45000
+    "salary": 45000,
+    "motto": "cats are strange"
   },
   {
+    "name": "Adam",
     "age": 33,
-    "salary": 90000
+    "salary": 90000,
+    "motto": "cats are secretly extraterrestrial"
   },
   {
+    "name": "Annie",
     "age": 53,
-    "salary": 39000
+    "salary": 39000,
+    "motto": "cats are greedy"
   },
   {
+    "name": "Michelle",
     "age": 18,
-    "salary": 12000
+    "salary": 12000,
+    "motto": "cats are tricky"
   },
   {
+    "name": "Mike",
     "age": 25,
-    "salary": 42000
+    "salary": 42000,
+    "motto": "cats are impatient"
   },
   {
+    "name": "Ben",
     "age": 34,
-    "salary": 51000
+    "salary": 51000,
+    "motto": "cats are random"
   },
   {
+    "name": "Cecilia",
     "age": 30,
-    "salary": 26000
+    "salary": 26000,
+    "motto": "cats are interesting"
   },
   {
+    "name": "Daniel",
     "age": 30,
-    "salary": 34000
+    "salary": 34000,
+    "motto": "cats are crazy"
   },
   {
+    "name": "Fiona",
     "age": 29,
-    "salary": 27000
+    "salary": 27000,
+    "motto": "cats are not programmers"
   }
 ]

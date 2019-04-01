@@ -36,7 +36,13 @@ func (g *graphAnonymizer) anonymize() (err error) {
 
 	schema := g.getSchema()
 	var table *model.Table
-	table, err = g.getTable(schema)
+
+	var data []bson.M
+	if data, err = anondb.FetchUnanonymizedData(g.dataset.Name); err != nil {
+		return
+	}
+
+	table, err = g.getTable(schema, data)
 	if err != nil {
 		return
 	}
@@ -51,17 +57,25 @@ func (g *graphAnonymizer) anonymize() (err error) {
 	}
 
 	fmt.Printf("%v", anonymizer.Table)
-	// TODO: persist data
+
+	for i, row := range anonymizer.Table.GetRows() {
+		for j, col := range schema.Columns {
+			dr := data[i]
+			dr[col.GetName()] = row.Data[j].String()
+			dr["__anonymized"] = true
+		}
+	}
+
+	err = anondb.PersistAnonymizedData(g.dataset.Name, data)
+	if err != nil {
+		return err
+	}
 
 	return errors.New("not implemented")
 }
 
-func (g *graphAnonymizer) getTable(schema *model.Schema) (table *model.Table, err error) {
+func (g *graphAnonymizer) getTable(schema *model.Schema, data []bson.M) (table *model.Table, err error) {
 	table = model.NewTable(schema)
-	var data []bson.M
-	if data, err = anondb.FetchUnanonymizedData(g.dataset.Name); err != nil {
-		return
-	}
 	for _, doc := range data {
 		var row []interface{}
 		for _, col := range schema.Columns {
