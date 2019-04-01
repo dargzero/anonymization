@@ -10,7 +10,7 @@
       "mode": "qid",
       "type": "numeric",
       "opts": {
-        "generalizer": "int-range",
+        "type": "int",
         "min": "0",
         "max": "150"
       }
@@ -20,7 +20,7 @@
       "mode": "qid",
       "type": "numeric",
       "opts": {
-        "generalizer": "int-range",
+        "type": "int",
         "min": "0",
         "max": "200000"
       }

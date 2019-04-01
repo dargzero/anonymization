@@ -8,10 +8,12 @@ import (
 	"strconv"
 )
 
-const modeQid = "modeQid"
-const typeNumeric = "typeNumeric"
+const modeQid = "qid"
+const typeNumeric = "numeric"
+const numericTypeInt = "int"
+const numericTypeFloat = "float"
 const typePrefix = "prefix"
-const optGeneralizer = "generalizer"
+const optType = "type"
 const optMin = "min"
 const optMax = "max"
 
@@ -36,68 +38,84 @@ func (g *graphAnonymizer) anonymize() error {
 func (g *graphAnonymizer) getSchema() (*model.Schema, error) {
 	schema := &model.Schema{}
 	for _, field := range g.qidFields {
-		if err := validate(field); err != nil {
+		g, err := createGeneralizer(field)
+		if err != nil {
 			return nil, err
 		}
-
-		//var g generalization.Generalizer
-		//switch field.Type {
-		//case typeNumeric:
-		//	g = generalization.NewIntRangeGeneralizer(0, 100)
-		//	break
-		//case typePrefix:
-		//	break
-		//}
+		column := model.NewColumn(field.Name, g)
+		schema.Columns = append(schema.Columns, column)
 	}
 	return schema, nil
 }
 
-func validate(field *anonmodel.FieldAnonymizationInfo) error {
-	if field.Mode != modeQid {
-		return errors.New("unexpected field mode: " + field.Mode)
+func createGeneralizer(field *anonmodel.FieldAnonymizationInfo) (generalization.Generalizer, error) {
+	switch field.Type {
+	case typeNumeric:
+		return createNumericGeneralizer(field.Opts)
+	case typePrefix:
+		return nil, errors.New("not implemented")
 	}
-	if field.Type != typeNumeric && field.Type != typePrefix {
-		return errors.New("unexpected field type: " + field.Type)
-	}
-	return nil
+	return nil, errors.New("unexpected field type: " + field.Type)
 }
 
-func createGeneralizer(opts map[string]string) (generalization.Generalizer, error) {
-	generalizer, err := getOption(opts, optGeneralizer)
-	if err != nil {
-		return nil, err
-	}
-	switch generalizer {
-	case "int-range":
+func createNumericGeneralizer(opts map[string]string) (generalization.Generalizer, error) {
+	fieldType := opts[optType]
+
+	switch fieldType {
+	case numericTypeInt:
 		return createIntGeneralizer(opts)
-	case "float-range":
-		return nil, errors.New("not implemented")
-		break
-	case "prefix":
-		return nil, errors.New("not implemented")
-		break
+	case numericTypeFloat:
+		return createFloatGeneralizer(opts)
+	case "":
+		return createFloatGeneralizer(opts)
 	}
-	return nil, errors.New("unknown generalizer: " + generalizer)
+	return nil, errors.New("unknown numeric type: " + fieldType)
 }
 
-func createIntGeneralizer(opts map[string]string) (generalization.Generalizer, error) {
-	minVal, err := getOption(opts, optMin)
-	maxVal, err := getOption(opts, optMax)
-	if err != nil {
-		return nil, err
+func createIntGeneralizer(opts map[string]string) (g generalization.Generalizer, err error) {
+	var min, max int
+	if min, err = getInt(opts, optMin); err != nil {
+		return
 	}
-	min, err := strconv.Atoi(minVal)
-	max, err := strconv.Atoi(maxVal)
-	if err != nil {
-		return nil, err
+	if max, err = getInt(opts, optMax); err != nil {
+		return
 	}
-	return generalization.NewIntRangeGeneralizer(min, max), nil
+	g = generalization.NewIntRangeGeneralizer(min, max)
+	return
 }
 
-func getOption(opts map[string]string, key string) (string, error) {
-	val := opts[key]
-	if val == "" {
-		return "", errors.New("missing field-option: " + key)
+func createFloatGeneralizer(opts map[string]string) (g generalization.Generalizer, err error) {
+	var min, max float64
+	if min, err = getFloat(opts, optMin); err != nil {
+		return
 	}
-	return val, nil
+	if max, err = getFloat(opts, optMax); err != nil {
+		return
+	}
+	g = generalization.NewFloatRangeGeneralizer(min, max)
+	return
+}
+
+func getInt(opts map[string]string, key string) (val int, err error) {
+	var s string
+	if s, err = getOpt(opts, key); err != nil {
+		return
+	}
+	return strconv.Atoi(s)
+}
+
+func getFloat(opts map[string]string, key string) (val float64, err error) {
+	var s string
+	if s, err = getOpt(opts, key); err != nil {
+		return
+	}
+	return strconv.ParseFloat(s, 64)
+}
+
+func getOpt(opts map[string]string, key string) (val string, err error) {
+	var ok bool
+	if val, ok = opts[key]; !ok {
+		return val, errors.New("missing required option: " + key)
+	}
+	return
 }
