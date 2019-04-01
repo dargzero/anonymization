@@ -15,6 +15,7 @@ const numericTypeFloat = "float"
 const optType = "type"
 const optMin = "min"
 const optMax = "max"
+const defaultMaxWords = 100
 
 // graphAnonymizer is a wrapper for the graph based k-anon anonymization library
 type graphAnonymizer struct {
@@ -52,15 +53,28 @@ func createGeneralizer(field *anonmodel.FieldAnonymizationInfo) (generalization.
 	case typeNumeric:
 		return createNumericGeneralizer(field.Opts)
 	case typePrefix:
-		return nil, errors.New("not implemented")
+		return createPrefixGeneralizer(field.Opts)
 	}
 	return nil, errors.New("unexpected field type: " + field.Type)
 }
 
-func createNumericGeneralizer(opts map[string]string) (generalization.Generalizer, error) {
-	fieldType := opts[optType]
+func createPrefixGeneralizer(opts map[string]string) (g generalization.Generalizer, err error) {
+	var maxWords int
+	_, maxDeclared := opts[optMax]
+	if maxDeclared {
+		if maxWords, err = getInt(opts, optMax); err != nil {
+			return
+		}
+	} else {
+		maxWords = defaultMaxWords
+	}
+	g = &generalization.PrefixGeneralizer{MaxWords: maxWords}
+	return
+}
 
-	switch fieldType {
+func createNumericGeneralizer(opts map[string]string) (generalization.Generalizer, error) {
+	numericType := opts[optType]
+	switch numericType {
 	case numericTypeInt:
 		return createIntGeneralizer(opts)
 	case numericTypeFloat:
@@ -68,7 +82,7 @@ func createNumericGeneralizer(opts map[string]string) (generalization.Generalize
 	case "":
 		return createFloatGeneralizer(opts)
 	}
-	return nil, errors.New("unknown numeric type: " + fieldType)
+	return nil, errors.New("unknown numeric type: " + numericType)
 }
 
 func createIntGeneralizer(opts map[string]string) (g generalization.Generalizer, err error) {
