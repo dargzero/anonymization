@@ -71,7 +71,7 @@ func (g *graphAnonymizer) anonymize() (err error) {
 		return err
 	}
 
-	return errors.New("not implemented")
+	return nil
 }
 
 func (g *graphAnonymizer) getTable(schema *model.Schema, data []bson.M) (table *model.Table, err error) {
