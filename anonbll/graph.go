@@ -69,7 +69,7 @@ func createGeneralizer(opts map[string]string) (generalization.Generalizer, erro
 	}
 	switch generalizer {
 	case "int-range":
-		return createGeneralizer(opts)
+		return createIntGeneralizer(opts)
 	case "float-range":
 		return nil, errors.New("not implemented")
 		break
