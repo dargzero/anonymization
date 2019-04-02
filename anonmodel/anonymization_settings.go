@@ -14,8 +14,8 @@ func (settings *AnonymizationSettings) Validate() error {
 		return fmt.Errorf("The 'k' value should be at least 2, got: %v", settings.K)
 	}
 
-	if settings.Algorithm != "mondrian" {
-		return fmt.Errorf("The only currently supported anonymization is 'mondrian', got '%v'", settings.Algorithm)
+	if settings.Algorithm != "mondrian" && settings.Algorithm != "graph" {
+		return fmt.Errorf("Expected mondrian or graph. Algorithm '%v' not supported.", settings.Algorithm)
 	}
 
 	if settings.Mode != "single" && settings.Mode != "continuous" {

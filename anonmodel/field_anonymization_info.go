@@ -7,9 +7,16 @@ import (
 
 // FieldAnonymizationInfo stores how each data field should be handled during anonymization
 type FieldAnonymizationInfo struct {
-	Name string `json:"name" bson:"name"`
-	Mode string `json:"mode" bson:"mode"`
-	Type string `json:"type" bson:"type"`
+	Name string            `json:"name" bson:"name"`
+	Mode string            `json:"mode" bson:"mode"`
+	Type string            `json:"type" bson:"type"`
+	Opts ExtraFieldOptions `json:"opts" bson:"opts"`
+}
+
+type ExtraFieldOptions struct {
+	Type string   `json:"type" bson:"type"`
+	Min  *float64 `json:"min" bson:"min"`
+	Max  *float64 `json:"max" bson:"max"`
 }
 
 func (fieldInfo *FieldAnonymizationInfo) Validate() error {

@@ -11,7 +11,8 @@ var globalSession *mgo.Session
 // InitConnection initializes the database connection
 func InitConnection() (err error) {
 	dialInfo := &mgo.DialInfo{
-		Addrs:    []string{"anonymization_database:27017"},
+		Addrs: []string{"localhost:27017"},
+		// Addrs:    []string{"anonymization_database:27017"},
 		Timeout:  time.Second * 30,
 		Database: "anondb",
 		AppName:  "anonymization_server",

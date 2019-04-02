@@ -1,0 +1,41 @@
+{
+  "settings": {
+    "k": 3,
+    "algorithm": "graph",
+    "mode": "single"
+  },
+  "fields": [
+    {
+      "name": "name",
+      "mode": "drop"
+    },
+    {
+      "name": "age",
+      "mode": "qid",
+      "type": "numeric",
+      "opts": {
+        "type": "int",
+        "min": 0,
+        "max": 150
+      }
+    },
+    {
+      "name": "salary",
+      "mode": "qid",
+      "type": "numeric",
+      "opts": {
+        "type": "int",
+        "min": 0,
+        "max": 200000
+      }
+    },
+    {
+      "name": "motto",
+      "mode": "qid",
+      "type": "prefix",
+      "opts": {
+        "max": 150
+      }
+    }
+  ]
+}

@@ -40,17 +40,24 @@ func doAnonymization(dataset *anonmodel.Dataset, continuous bool) error {
 	}
 
 	fieldsToSuppress := anonmodel.GetSuppressedFields(dataset.Fields)
-	if err := anondb.SuppressFields(anonCollectionName, fieldsToSuppress); err != nil {
-		return err
+	if len(fieldsToSuppress) > 0 {
+		if err := anondb.SuppressFields(anonCollectionName, fieldsToSuppress); err != nil {
+			return err
+		}
 	}
 
-	var algorithm anonymizerAlgorithm
 	quasiIdentifierFields := anonmodel.GetQuasiIdentifierFields(dataset.Fields)
 
-	if dataset.Settings.Algorithm == "mondrian" {
+	var algorithm anonymizerAlgorithm
+	switch dataset.Settings.Algorithm {
+	case "mondrian":
 		algorithm = &mondrian{}
-	} else {
-		return fmt.Errorf("The only currently supported anonymization algorithm is 'mondrian', got '%v'", dataset.Settings.Algorithm)
+		break
+	case "graph":
+		algorithm = &graphAnonymizer{}
+		break
+	default:
+		return fmt.Errorf("%v is not supported (must be one of 'mondrian', 'graph')", dataset.Settings.Algorithm)
 	}
 
 	algorithm.initialize(dataset, anonCollectionName, quasiIdentifierFields)
